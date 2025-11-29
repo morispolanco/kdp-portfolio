@@ -19,30 +19,30 @@ const Sidebar: React.FC<SidebarProps> = ({ books, onAddBook, onUpdateBook, onRem
   const [title, setTitle] = useState('');
   // Default date
   const [launchDate, setLaunchDate] = useState(new Date().toISOString().split('T')[0]);
-  const [words, setWords] = useState(25000);
+  const [words, setWords] = useState(50000);
   const [quality, setQuality] = useState(7);
   const [reviews, setReviews] = useState(0);
   const [genre, setGenre] = useState<Genre>(Genre.FICTION);
   const [isSeries, setIsSeries] = useState(false);
   const [seriesLTV, setSeriesLTV] = useState(0);
-  const [adBudget, setAdBudget] = useState(150.0); // Monthly budget
+  const [adBudget, setAdBudget] = useState(50); // Monthly budget
   const [manualPricing, setManualPricing] = useState(false);
-  const [priceLaunch, setPriceLaunch] = useState(0.99);
-  const [priceNormal, setPriceNormal] = useState(3.99);
+  const [priceLaunch, setPriceLaunch] = useState(2.99);
+  const [priceNormal, setPriceNormal] = useState(7.99);
 
   const resetForm = () => {
     setTitle('');
     setLaunchDate(new Date().toISOString().split('T')[0]);
-    setWords(25000);
+    setWords(50000);
     setQuality(7);
     setReviews(0);
     setGenre(Genre.FICTION);
     setIsSeries(false);
     setSeriesLTV(0);
-    setAdBudget(150.0);
+    setAdBudget(50);
     setManualPricing(false);
-    setPriceLaunch(0.99);
-    setPriceNormal(3.99);
+    setPriceLaunch(2.99);
+    setPriceNormal(7.99);
     setEditingId(null);
   };
 

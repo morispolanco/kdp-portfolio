@@ -11,15 +11,13 @@ const GENRE_FACTORS: Record<Genre, number> = {
 };
 
 export const calculatePricing = (quality: number): { normal: number; launch: number } => {
-  let normal = 2.99;
-  if (quality >= 9) normal = 4.99;
-  else if (quality >= 7) normal = 3.99;
-  
-  if (quality < 4) normal = 0.99;
+  let normal = 7.99;
+  if (quality >= 9) normal = 9.99;
+  else if (quality < 5) normal = 3.99;
 
   return {
     normal,
-    launch: 0.99
+    launch: 2.99
   };
 };
 
