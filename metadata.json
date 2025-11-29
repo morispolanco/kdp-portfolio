@@ -1,0 +1,5 @@
+{
+  "name": "KDP Portfolio Manager",
+  "description": "A simulation tool for authors to manage book portfolios, estimate monthly sales, royalties, and calculate ROI based on market quality and ad spend parameters.",
+  "requestFramePermissions": []
+}
