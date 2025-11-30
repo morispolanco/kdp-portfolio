@@ -13,19 +13,42 @@ function App() {
       if (!savedBooks) return [];
       
       const parsed = JSON.parse(savedBooks);
+      if (!Array.isArray(parsed)) return [];
       
-      // Migration: Convert adBudgetDaily to adBudgetMonthly if necessary
-      // This handles the transition for existing users
+      // Migration Logic
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return parsed.map((b: any) => ({
-        ...b,
-        // If adBudgetMonthly exists, use it. 
-        // If not, calculate it from daily (defaulting to 5 if neither exists) * 30
-        adBudgetMonthly: b.adBudgetMonthly !== undefined 
-            ? b.adBudgetMonthly 
-            : (b.adBudgetDaily !== undefined ? b.adBudgetDaily * 30 : 150),
-        adBudgetDaily: undefined // cleanup old key
-      }));
+      return parsed.map((b: any) => {
+        // Migration from previous versions to include autoOptimize
+        const hasAmazon = b.amazonAdBudget !== undefined;
+        
+        let amazonBudget = b.amazonAdBudget;
+        let facebookBudget = b.facebookAdBudget;
+
+        // Old migration logic for daily/monthly total
+        if (!hasAmazon) {
+            let previousTotalMonthly = 0;
+            if (b.adBudgetMonthly !== undefined) {
+                previousTotalMonthly = b.adBudgetMonthly;
+            } else if (b.adBudgetDaily !== undefined) {
+                previousTotalMonthly = b.adBudgetDaily * 30;
+            } else {
+                previousTotalMonthly = 100;
+            }
+            amazonBudget = previousTotalMonthly;
+            facebookBudget = 0;
+        }
+
+        return {
+            ...b,
+            amazonAdBudget: amazonBudget,
+            facebookAdBudget: facebookBudget || 0,
+            autoOptimize: b.autoOptimize || false, // Default new flag to false
+            synopsis: b.synopsis || '', // Init text fields
+            firstChapter: b.firstChapter || '', // Init text fields
+            adBudgetMonthly: undefined,
+            adBudgetDaily: undefined
+        };
+      });
     } catch (error) {
       console.error("Failed to load portfolio from localStorage:", error);
       return [];
@@ -85,7 +108,7 @@ function App() {
       <Sidebar 
         books={books} 
         onAddBook={handleAddBook} 
-        onUpdateBook={handleUpdateBook}
+        onUpdateBook={handleUpdateBook} 
         onRemoveBook={handleRemoveBook}
         onClearPortfolio={handleClearPortfolio}
       />
